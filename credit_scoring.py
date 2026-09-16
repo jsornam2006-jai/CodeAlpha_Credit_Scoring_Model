@@ -172,3 +172,82 @@ print("\nRandom Forest:")
 print("Accuracy:", accuracy_rf)
 print("Precision:", precision_rf)
 print("Recall:", recall_rf)
+
+print("\n==============================")
+print("F1-SCORE AND ROC-AUC")
+print("==============================")
+
+
+y_prob_log = logistic_model.predict_proba(X_test)[:, 1]
+
+f1_log = f1_score(y_test, y_pred)
+roc_log = roc_auc_score(y_test, y_prob_log)
+
+print("\nLogistic Regression:")
+print("F1-Score:", f1_log)
+print("ROC-AUC :", roc_log)
+
+
+
+y_prob_tree = decision_tree_model.predict_proba(X_test)[:, 1]
+
+f1_tree = f1_score(y_test, y_pred_tree)
+roc_tree = roc_auc_score(y_test, y_prob_tree)
+
+print("\nDecision Tree:")
+print("F1-Score:", f1_tree)
+print("ROC-AUC :", roc_tree)
+
+
+
+y_prob_rf = random_forest_model.predict_proba(X_test)[:, 1]
+
+f1_rf = f1_score(y_test, y_pred_rf)
+roc_rf = roc_auc_score(y_test, y_prob_rf)
+
+print("\nRandom Forest:")
+print("F1-Score:", f1_rf)
+print("ROC-AUC :", roc_rf)
+
+print("CREDIT RISK PREDICTION SYSTEM")
+
+age=int(input("Enter age: "))
+income=int(input("Enter annual income: "))
+home_ownership=input("Enter home ownership status (Own/Rent/Mortage/Other):")
+emp_length=float(input("Enter employment length (in years): "))
+loan_intent=input("Enter loan intent (PERSONAL/EDUCATION/MEDICAL/VENTURE/DEBITCONSOLDATION/HOMEIMPROVEMENT/OTHER):")
+loan_grade=input("Enter loan grade(A/B/C/D/E/F/G):")
+loan_amount=int(input("Enter loan amount:"))
+loan_int_rate=float(input("Enter loan interest rate: "))
+loan_percent_income=float(input("Enter loan percent of income: "))
+default_history=input("Previous default history (Yes/No):")
+cred_hist_length=int(input("Enter credit history length in years: "))
+
+# Create input data for prediction
+
+new_customer = pd.DataFrame({
+    "person_age": [age],
+    "person_income": [income],
+    "person_home_ownership": [home_ownership],
+    "person_emp_length": [emp_length],
+    "loan_intent": [loan_intent],
+    "loan_grade": [loan_grade],
+    "loan_amnt": [loan_amount],
+    "loan_int_rate": [loan_int_rate],
+    "loan_percent_income": [loan_percent_income],
+    "cb_person_default_on_file": [default_history],
+    "cb_person_cred_hist_length": [cred_hist_length]
+})
+
+print("\nCustomer details entered successfully!")
+print(new_customer)
+
+
+prediction = random_forest_model.predict(new_customer)
+
+if prediction[0] == 1:
+    print("\n⚠️ HIGH CREDIT RISK")
+    print("The customer may default on the loan.")
+else:
+    print("\n✅ LOW CREDIT RISK")
+    print("The customer is unlikely to default on the loan.")
